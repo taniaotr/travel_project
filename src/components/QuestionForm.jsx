@@ -5,9 +5,8 @@ import Select from "react-select";
 import countries from "world-countries";
 import { City } from "country-state-city";
 
-
 const countryOptions = countries.map((country) => ({
-    value: country.cca2, // Код країни (наприклад, UA, US)
+    value: country.name.common, // Код країни (наприклад, UA, US)
     label: `${country.name.common} (${country.cca2})`, // Назва країни
   }));
 
@@ -17,6 +16,9 @@ const questions = [
       question: "Який ваш бюджет на подорож?",
       type: "radio",
       options: ["Менше $500", "$500 - $1000", "$1000 - $3000", "Більше $3000"],
+      // options: [
+      //   { value: "Less500", label: 'Менше $500' }
+      // ],
     },
     {
     id: 2,
@@ -40,7 +42,7 @@ const questions = [
   {
     id: 4,
     question: "Яке ваше місце відправлення? (Оберіть зі списку країн)",
-    type: "select", 
+    type: "select",
   },
   {
     id: 5,
@@ -129,6 +131,7 @@ const questions = [
     ],
   },
   {
+    id: 13,
     question: "Чи хочете включити у маршрут місцеві свята та події?",
     type: "radio",
     options: [
@@ -136,90 +139,58 @@ const questions = [
       "Ні"
     ],
   },
-      
+     
 ];
-  
 
 const QuestionForm = () => {
   const [step, setStep] = useState(0);
-  const [cityOptions, setCityOptions] = useState([]);
   const [answers, setAnswers] = useState(() =>
     Object.fromEntries(questions.map((q) => [q.id, ""]))
   );
-  
-
+  console.log(answers);
+ 
+  const handleSubmit = () => {
+    console.log("Відправляємо дані:", answers);
+    alert("Подорож згенеровано! 🎉"); // Поки просто виводимо повідомлення
+  };
+ 
   const handleNext = () => {
     if (questions[step].id === 5) {
-        if (answers[5] === "Так, я хочу відвідати певну країну") {
-            if (!answers[6]) return; // Не даємо перейти, якщо не обрали країну
-            if (cityOptions.length > 0 && !answers[7]) return; // Якщо є міста, місто теж обов'язкове
+        if (answers[5] === "Так, я хочу відвідати певну країну" && !answers[5.1]) {
+            return; // Не даємо натискати "Далі", якщо не обрали країну
         }
     }
-
-    // Очищуємо країну та місто після переходу на наступне питання (щоб не рендерилось далі)
-    if (questions[step].id === 5) {
-        setAnswers((prev) => ({
-            ...prev,
-            6: "",
-            7: "",
-        }));
-    }
-
     setStep(step + 1); // Переходимо до наступного питання
 };
 
-  const handleSelect = (option) => {
-    const currentQuestion = questions[step];
+const handleSelect = (option) => {
+  const currentQuestion = questions[step];
 
-    if (currentQuestion.type === "checkbox") {
-        setAnswers((prev) => {
-            const prevAnswers = prev[currentQuestion.id] || [];
-            return {
-                ...prev,
-                [currentQuestion.id]: prevAnswers.includes(option)
-                    ? prevAnswers.filter((item) => item !== option) // Видалення вибору
-                    : [...prevAnswers, option], // Додавання вибору
-            };
-        });
-    } else {
-        let newAnswers = { ...answers, [currentQuestion.id]: option };
+  if (currentQuestion.type === "checkbox") {
+      setAnswers((prev) => {
+          const prevAnswers = prev[currentQuestion.id] || [];
+          return {
+              ...prev,
+              [currentQuestion.id]: prevAnswers.includes(option)
+                  ? prevAnswers.filter((item) => item !== option) // Видалення вибору
+                  : [...prevAnswers, option], // Додавання вибору
+          };
+      });
+  } else {
+      let newAnswers = { ...answers, [currentQuestion.id]: option };
 
-        // Якщо змінюється відповідь на "Ні" в 5-му питанні → видаляємо вибір країни та міста
-        if (currentQuestion.id === 5 && option === "Ні, хочу отримати рекомендації") {
-            newAnswers[6] = ""; // Видаляємо країну
-            newAnswers[7] = ""; // Видаляємо місто
-            setCityOptions([]); // Очищаємо список міст
-        }
 
-        setAnswers(newAnswers);
-    }
-};
+      // Якщо змінюється відповідь на "Ні" в 5-му питанні → видаляємо вибір країни
+      if (currentQuestion.id === 5 && option === "Ні, хочу отримати рекомендації") {
+          newAnswers[6] = ""; // Видаляємо країну
+      }
 
-const handleSelectCountry = (selectedOption) => {
-    setAnswers((prev) => ({
-        ...prev,
-        6: selectedOption.value, // Зберігаємо вибір країни
-        7: "", // Очищаємо місто при зміні країни
-    }));
-
-    // Отримуємо список міст для вибраної країни
-    const cities = City.getCitiesOfCountry(selectedOption.value)?.map((city) => ({
-        value: city.name,
-        label: city.name,
-    })) || [];
-
-    setCityOptions(cities); // Оновлюємо список міст
-};
-
-const handleSelectCity = (selectedOption) => {
-    setAnswers((prev) => ({
-        ...prev,
-        7: selectedOption.value, // Зберігаємо вибір міста
-    }));
+      setAnswers(newAnswers);
+  }
 };
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-lg border border-gray-200">
+    <div id="question-form" className="w-full max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-lg border border-gray-200">
       {/* Прогрес-бар */}
       <ProgressBar step={step} totalSteps={questions.length} />
 
@@ -258,42 +229,40 @@ const handleSelectCity = (selectedOption) => {
             )}
         </div>
 
-{/* Вибір країни та міста (відображається тільки на 5-му питанні) */}
-{questions[step].id === 5 && answers[5] === "Так, я хочу відвідати певну країну" && (
-  <>
-    <Select
-      options={countryOptions}
-      className="w-full mt-4"
-      placeholder="Оберіть країну для подорожі..."
-      value={countryOptions.find(option => option.value === answers[6])}
-      onChange={handleSelectCountry}
-      isSearchable={true}
-    />
+      {/* Вибір країни (з'являється після вибору "Так") */}
+      {questions[step].id === 5 && answers[5] === "Так, я хочу відвідати певну країну" && (
+        <Select
+          options={countryOptions}
+          className="w-full mt-4"
+          placeholder="Оберіть країну для подорожі..."
+          value={countryOptions.find(option => option.value === answers[6])}
+          onChange={(selectedOption) => setAnswers({ ...answers, 5.1: selectedOption.value })}
+          isSearchable={true}
+        />
+      )}
 
-    {/* Вибір міста (з'являється після вибору країни) */}
-    {answers[6] && cityOptions.length > 0 && (
-      <Select
-        options={cityOptions}
-        className="w-full mt-4"
-        placeholder="Оберіть місто (якщо є пріоритет)..."
-        value={cityOptions.find(option => option.value === answers[7])}
-        onChange={handleSelectCity}
-        isSearchable={true}
-        noOptionsMessage={() => "Місто не знайдено"}
-      />
-    )}
-  </>
-)}
+    <div className="flex justify-between items-center mt-6">
+      {/* Кнопка "Назад" */}
+        <button
+          onClick={() => setStep((prev) => Math.max(prev - 1, 0))}
+          className="btn btn-primary text-white flex items-center px-6 py-3 mt-0"
+          disabled={step === 0}
+        >
+        <FaArrowRight className="rotate-180 mr-2" /> Назад
+      </button>
 
-      {/* Кнопка "Далі" */}
+        {/* Кнопка "Далі" */}
       <button
-        onClick={handleNext}
-        className="btn btn-primary text-white mt-6 flex items-center"
-        disabled={!answers[questions[step].id]}
+        onClick={step === questions.length - 1 ? handleSubmit : handleNext} // Якщо останнє питання, запускаємо handleSubmit
+        className="btn btn-primary text-white flex items-center px-6 py-3"
+        disabled={!answers[questions[step].id]} // Вимикаємо, якщо відповідь не вибрана
       >
-        Далі <FaArrowRight className="ml-2" />
+        {step === questions.length - 1 ? "Згенерувати подорож" : "Далі"}
+        <FaArrowRight className="ml-2" />
       </button>
     </div>
+
+      </div>
   );
 };
 

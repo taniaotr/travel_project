@@ -13,13 +13,14 @@ const Header = () => {
 
         <nav className="hidden md:flex gap-6 font-medium text-gray-600 ml-auto">
           <a className="hover:text-gray-900 cursor-pointer">Про нас</a>
-          <a className="hover:text-gray-900 cursor-pointer">Як працює</a>
+          <a className="hover:text-gray-900 cursor-pointer">Як це працює</a>
         </nav>
 
         <button className="hidden md:block btn text-white rounded-full px-6 ml-10"
           style={{ backgroundColor: "#205CDE" }}
           onMouseEnter={(e) => e.target.style.backgroundColor = "#1A4CAF"}
-          onMouseLeave={(e) => e.target.style.backgroundColor = "#205CDE"}>
+          onMouseLeave={(e) => e.target.style.backgroundColor = "#205CDE"}
+          onClick={scrollToForm}>
           Почати планування
         </button>
 
@@ -36,7 +37,8 @@ const Header = () => {
           <nav className="flex flex-col p-4 gap-4 text-gray-600">
             <a className="hover:text-gray-900 cursor-pointer">Про нас</a>
             <a className="hover:text-gray-900 cursor-pointer">Як працює</a>
-            <button className="btn bg-primary text-white rounded-full px-6">
+            <button className="btn bg-primary text-white rounded-full px-6
+            onClick={scrollToForm}">
               Почати планування
             </button>
           </nav>
@@ -44,6 +46,13 @@ const Header = () => {
       )}
     </header>
   );
+};
+
+const scrollToForm = () => {
+  const formElement = document.getElementById("question-form");
+  if (formElement) {
+    formElement.scrollIntoView({ behavior: "smooth" });
+  }
 };
 
 export default Header;

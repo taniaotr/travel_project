@@ -14,7 +14,8 @@ const Hero = () => {
         <button className="btn text-white rounded-full px-6 font-montserrat"
           style={{ backgroundColor: "#205CDE" }}
           onMouseEnter={(e) => e.target.style.backgroundColor = "#1A4CAF"}
-          onMouseLeave={(e) => e.target.style.backgroundColor = "#205CDE"}>
+          onMouseLeave={(e) => e.target.style.backgroundColor = "#205CDE"}
+          onClick={scrollToForm}>
           Почати зараз
         </button>
       </div>
@@ -27,5 +28,13 @@ const Hero = () => {
     </section>
   );
 };
+
+const scrollToForm = () => {
+    const formElement = document.getElementById("question-form");
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  
 
 export default Hero;
