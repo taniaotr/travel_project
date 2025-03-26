@@ -16,11 +16,10 @@ const Header = () => {
           <a className="hover:text-gray-900 cursor-pointer">Як це працює</a>
         </nav>
 
-        <button className="hidden md:block btn text-white rounded-full px-6 ml-10"
-          style={{ backgroundColor: "#205CDE" }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = "#1A4CAF"}
-          onMouseLeave={(e) => e.target.style.backgroundColor = "#205CDE"}
-          onClick={scrollToForm}>
+        <button
+          className="hidden md:block btn text-white rounded-full px-6 ml-10 bg-[#205CDE] hover:bg-[#1A4CAF]"
+          onClick={scrollToForm}
+        >
           Почати планування
         </button>
 

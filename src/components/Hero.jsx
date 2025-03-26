@@ -1,8 +1,9 @@
 import React from "react";
 
-const Hero = () => {
+const Hero = (props) => {
+  const {onStart} = props;
   return (
-    <section className="container mx-auto px-18 pt-50 pb-15 flex flex-col md:flex-row items-center">
+    <section className="container mx-auto px-18 pt-20 pb-15 flex flex-col md:flex-row items-center">
       {/* Ліва частина - текст */}
       <div className="md:w-1/2 text-center md:text-left">
       <h1 className="text-4xl font-bold font-inter mb-4">   
@@ -13,9 +14,7 @@ const Hero = () => {
         </p>
         <button className="btn text-white rounded-full px-6 font-montserrat"
           style={{ backgroundColor: "#205CDE" }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = "#1A4CAF"}
-          onMouseLeave={(e) => e.target.style.backgroundColor = "#205CDE"}
-          onClick={scrollToForm}>
+          onClick={onStart}>
           Почати зараз
         </button>
       </div>
@@ -28,13 +27,6 @@ const Hero = () => {
     </section>
   );
 };
-
-const scrollToForm = () => {
-    const formElement = document.getElementById("question-form");
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" });
-    }
-  };
   
 
 export default Hero;
