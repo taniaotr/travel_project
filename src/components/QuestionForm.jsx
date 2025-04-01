@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { FaArrowRight } from "react-icons/fa";
 import Select from "react-select";
 import countries from "world-countries";
-import { City } from "country-state-city";
 
 const countryOptions = countries.map((country) => ({
-    value: country.name.common, // Код країни (наприклад, UA, US)
-    label: `${country.name.common} (${country.cca2})`, // Назва країни
+    value: country.name.common, 
+    label: `${country.name.common} (${country.cca2})`, 
   }));
 
 const questions = [
@@ -17,10 +16,10 @@ const questions = [
       question: "Який ваш бюджет на подорож?",
       type: "radio",
       options: [
-        { value: "Less500", label: "Менше $500" },
-        { value: "500to1000", label: "$500 - $1000" },
-        { value: "1000to3000", label: "$1000 - $3000" },
-        { value: "More3000", label: "Більше $3000" }
+        { value: "Less 500$", label: "Менше $500" },
+        { value: "500-1000$", label: "$500 - $1000" },
+        { value: "1000-3000$", label: "$1000 - $3000" },
+        { value: "More than 3000$", label: "Більше $3000" }
       ],
     },
     {
@@ -29,139 +28,139 @@ const questions = [
     question: "Скільки триватиме ваша подорож?",
     type: "radio",
     options: [
-      { value: "1to3", label: "1-3 дні" },
-      { value: "4to7", label: "4-7 днів" },
-      { value: "8to14", label: "8-14 днів" },
-      { value: "More14", label: "Більше 14 днів" }
+      { value: "1 to 3 days", label: "1-3 дні" },
+      { value: "4 to 7 days", label: "4-7 днів" },
+      { value: "8 to 14days", label: "8-14 днів" },
+      { value: "More 14 days", label: "Більше 14 днів" }
     ]
   },
-  // {
-  //   id: 3,
-  //   key: "vacationType",
-  //   question: "Який тип відпочинку Вам цікавий?",
-  //   type: "checkbox",
-  //   options: [
-  //     { value: "beach", label: "🌴 Пляжний" },
-  //     { value: "city", label: "🏙️ Міський (культурний туризм)" },
-  //     { value: "mountains", label: "🏔️ Гори / активний відпочинок" },
-  //     { value: "nature", label: "🌿 Екологічний (природа, сільський туризм)" },
-  //     { value: "amusementParks", label: "🎡 Розважальні парки" },
-  //     { value: "gastronomic", label: "🍽️ Гастрономічний тур" }
-  //   ]
-  // },
-  // {
-  //   id: 4,
-  //   key: "departureCountry",
-  //   question: "Яке ваше місце відправлення? (Оберіть зі списку країн)",
-  //   type: "select",
-  // },
-  // {
-  //   id: 5,
-  //   key: "priorityDestination",
-  //   question: "Чи маєте ви пріоритетні напрямки?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "yes", label: "Так, я хочу відвідати певну країну" },
-  //     { value: "no", label: "Ні, хочу отримати рекомендації" }
-  //   ]
-  // },
-  // {
-  //   id: 6,
-  //   key: "transportation",
-  //   question: "Який спосіб пересування вам підходить?",
-  //   type: "checkbox",
-  //   options: [
-  //     { value: "plane", label: "✈️ Літак" },
-  //     { value: "train", label: "🚆 Потяг" },
-  //     { value: "bus", label: "🚌 Автобус" },
-  //     { value: "cruise", label: "⛵ Круїз" },
-  //     { value: "car", label: "🚗 Авто (орендоване чи своє)" }
-  //   ]
-  // },
-  // {
-  //   id: 7,
-  //   key: "accommodation",
-  //   question: "Який тип проживання вам підходить?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "hotel", label: "🏨 Готель" },
-  //     { value: "airbnb", label: "🏡 Оренда квартир (Airbnb)" },
-  //     { value: "camping", label: "⛺ Кемпінг" },
-  //     { value: "hostel", label: "🛌 Хостел" },
-  //     { value: "camper", label: "🚙 Подорож у кемпері" }
-  //   ]
-  // },
-  // {
-  //   id: 8,
-  //   key: "dietaryRestrictions",
-  //   question: "Чи маєте ви обмеження щодо харчування?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "noRestrictions", label: "Немає обмежень" },
-  //     { value: "vegetarian", label: "Вегетаріанське харчування" },
-  //     { value: "vegan", label: "Веганське харчування" },
-  //     { value: "glutenFree", label: "Безглютенове харчування" }
-  //   ]
-  // },
-  // {
-  //   id: 9,
-  //   key: "activities",
-  //   question: "Які активності вас цікавлять?",
-  //   type: "checkbox",
-  //   options: [
-  //     { value: "museums", label: "🎨 Музеї, виставки, історичні місця" },
-  //     { value: "waterSports", label: "🏄‍♂️ Водні види спорту" },
-  //     { value: "theater", label: "🎭 Театри, концерти, фестивалі" },
-  //     { value: "hiking", label: "🏕️ Піші походи, екотуризм" },
-  //     { value: "shopping", label: "🛍️ Шопінг" },
-  //     { value: "wineTasting", label: "🍷 Дегустації вин/локальної їжі" },
-  //     { value: "extremeSports", label: "🏎️ Екстремальні розваги (парашутний спорт, автогонки)" }
-  //   ]
-  // },
-  // {
-  //   id: 10,
-  //   key: "travelWithKids",
-  //   question: "Чи подорожуєте ви з дітьми?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "yes", label: "Так" },
-  //     { value: "no", label: "Ні" }
-  //   ]
-  // },
-  // {
-  //   id: 11,
-  //   key: "comfortLevel",
-  //   question: "Який рівень комфорту вам потрібен?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "econom", label: "💰 Бюджетний" },
-  //     { value: "comfortable", label: "💎 Комфортний" },
-  //     { value: "luxury", label: "👑 Люкс" }
-  //   ]
-  // },
-  // {
-  //   id: 12,
-  //   key: "season",
-  //   question: "Коли ви плануєте подорож?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "winter", label: "❄️ Зима" },
-  //     { value: "spring", label: "🌸 Весна" },
-  //     { value: "summer", label: "☀️ Літо" },
-  //     { value: "autumn", label: "🍂 Осінь" },
-  //     { value: "anytime", label: "📅 Будь-коли" }
-  //   ]
-  // },
-  // {
-  //   id: 13,
-  //   key: "localEvents",
-  //   question: "Чи хочете включити у маршрут місцеві свята та події?",
-  //   type: "radio",
-  //   options: [
-  //     { value: "yes", label: "Так" },
-  //     { value: "no", label: "Ні" }
-  //   ]
-  // },
+  {
+    id: 3,
+    key: "vacationType",
+    question: "Який тип відпочинку Вам цікавий?",
+    type: "checkbox",
+    options: [
+      { value: "beach", label: "🌴 Пляжний" },
+      { value: "city", label: "🏙️ Міський (культурний туризм)" },
+      { value: "mountains", label: "🏔️ Гори / активний відпочинок" },
+      { value: "nature", label: "🌿 Екологічний (природа, сільський туризм)" },
+      { value: "amusementParks", label: "🎡 Розважальні парки" },
+      { value: "gastronomic", label: "🍽️ Гастрономічний тур" }
+    ]
+  },
+  {
+    id: 4,
+    key: "departureCountry",
+    question: "Яке ваше місце відправлення? (Оберіть зі списку країн)",
+    type: "select",
+  },
+  {
+    id: 5,
+    key: "priorityDestination",
+    question: "Чи маєте ви пріоритетні напрямки?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Так, я хочу відвідати певну країну" },
+      { value: "no", label: "Ні, хочу отримати рекомендації" }
+    ]
+  },
+  {
+    id: 6,
+    key: "transportation",
+    question: "Який спосіб пересування вам підходить?",
+    type: "checkbox",
+    options: [
+      { value: "plane", label: "✈️ Літак" },
+      { value: "train", label: "🚆 Потяг" },
+      { value: "bus", label: "🚌 Автобус" },
+      { value: "cruise", label: "⛵ Круїз" },
+      { value: "car", label: "🚗 Авто (орендоване чи своє)" }
+    ]
+  },
+  {
+    id: 7,
+    key: "accommodation",
+    question: "Який тип проживання вам підходить?",
+    type: "radio",
+    options: [
+      { value: "hotel", label: "🏨 Готель" },
+      { value: "airbnb", label: "🏡 Оренда квартир (Airbnb)" },
+      { value: "camping", label: "⛺ Кемпінг" },
+      { value: "hostel", label: "🛌 Хостел" },
+      { value: "camper", label: "🚙 Подорож у кемпері" }
+    ]
+  },
+  {
+    id: 8,
+    key: "dietaryRestrictions",
+    question: "Чи маєте ви обмеження щодо харчування?",
+    type: "radio",
+    options: [
+      { value: "noRestrictions", label: "Немає обмежень" },
+      { value: "vegetarian", label: "Вегетаріанське харчування" },
+      { value: "vegan", label: "Веганське харчування" },
+      { value: "glutenFree", label: "Безглютенове харчування" }
+    ]
+  },
+  {
+    id: 9,
+    key: "activities",
+    question: "Які активності вас цікавлять?",
+    type: "checkbox",
+    options: [
+      { value: "museums", label: "🎨 Музеї, виставки, історичні місця" },
+      { value: "waterSports", label: "🏄‍♂️ Водні види спорту" },
+      { value: "theater", label: "🎭 Театри, концерти, фестивалі" },
+      { value: "hiking", label: "🏕️ Піші походи, екотуризм" },
+      { value: "shopping", label: "🛍️ Шопінг" },
+      { value: "wineTasting", label: "🍷 Дегустації вин/локальної їжі" },
+      { value: "extremeSports", label: "🏎️ Екстремальні розваги (парашутний спорт, автогонки)" }
+    ]
+  },
+  {
+    id: 10,
+    key: "travelWithKids",
+    question: "Чи подорожуєте ви з дітьми?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Так" },
+      { value: "no", label: "Ні" }
+    ]
+  },
+  {
+    id: 11,
+    key: "comfortLevel",
+    question: "Який рівень комфорту вам потрібен?",
+    type: "radio",
+    options: [
+      { value: "econom", label: "💰 Бюджетний" },
+      { value: "comfortable", label: "💎 Комфортний" },
+      { value: "luxury", label: "👑 Люкс" }
+    ]
+  },
+  {
+    id: 12,
+    key: "season",
+    question: "Коли ви плануєте подорож?",
+    type: "radio",
+    options: [
+      { value: "winter", label: "❄️ Зима" },
+      { value: "spring", label: "🌸 Весна" },
+      { value: "summer", label: "☀️ Літо" },
+      { value: "autumn", label: "🍂 Осінь" },
+      { value: "anytime", label: "📅 Будь-коли" }
+    ]
+  },
+  {
+    id: 13,
+    key: "localEvents",
+    question: "Чи хочете включити у маршрут місцеві свята та події?",
+    type: "radio",
+    options: [
+      { value: "yes", label: "Так" },
+      { value: "no", label: "Ні" }
+    ]
+  },
      
 ];
 
@@ -170,7 +169,7 @@ const QuestionForm = (props) => {
 
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState(() =>
-    Object.fromEntries(questions.map((q) => [q.id, ""]))
+    Object.fromEntries(questions.map((q) => [q.key, ""]))
   );
 
   const handleSubmit = () => {
@@ -191,21 +190,19 @@ const handleSelect = (option) => {
 
   if (currentQuestion.type === "checkbox") {
       setAnswers((prev) => {
-          const prevAnswers = prev[currentQuestion.id] || [];
+          const prevAnswers = prev[currentQuestion.key] || [];
           return {
               ...prev,
-              [currentQuestion.id]: prevAnswers.includes(option)
-                  ? prevAnswers.filter((item) => item !== option) // Видалення вибору
-                  : [...prevAnswers, option], // Додавання вибору
+              [currentQuestion.key]: prevAnswers.includes(option)
+                  ? prevAnswers.filter((item) => item !== option)
+                  : [...prevAnswers, option], 
           };
       });
   } else {
-      let newAnswers = { ...answers, [currentQuestion.id]: option };
+      let newAnswers = { ...answers, [currentQuestion.key]: option };
 
-
-      // Якщо змінюється відповідь на "Ні" в 5-му питанні → видаляємо вибір країни
       if (currentQuestion.id === 5 && option === "Ні, хочу отримати рекомендації") {
-          newAnswers[6] = ""; // Видаляємо країну
+          newAnswers[6] = ""; 
       }
 
       setAnswers(newAnswers);
@@ -229,20 +226,19 @@ const handleSelect = (option) => {
                 options={countryOptions}
                 className="w-full"
                 placeholder="Оберіть країну..."
-                value={countryOptions.find(option => option.value === answers[questions[step].id])}
-                onChange={(selectedOption) => setAnswers({ ...answers, [questions[step].id]: selectedOption.value })}
-                isSearchable={true} // Автофільтр
-                noOptionsMessage={() => "Країну не знайдено"} // Текст, якщо нічого не знайдено
+                value={countryOptions.find(option => option.value === answers[questions[step].key])}
+                onChange={(selectedOption) => setAnswers({ ...answers, [questions[step].key]: selectedOption.value })}
+                isSearchable={true} 
+                noOptionsMessage={() => "Країну не знайдено"} 
             />  
             ) : (
-                // Рендеримо варіанти для radio/checkbox
                 questions[step].options.map((option, index) => (
                 <label key={index} className="btn btn-outline flex items-center justify-start text-left w-full h-15 px-5 gap-2">
                     <input
                     type={questions[step].type === "radio" ? "radio" : "checkbox"}
-                    name={`question-${questions[step].id}`}
+                    name={`question-${questions[step].key}`}
                     className="w-5 h-5"
-                    checked={answers[questions[step].id]?.includes(option.value)}
+                    checked={answers[questions[step].key]?.includes(option.value)}
                     onChange={() => handleSelect(option.value)}
                     />
                     {option.label}
@@ -251,20 +247,18 @@ const handleSelect = (option) => {
             )}
         </div>
 
-      {/* Вибір країни (з'являється після вибору "Так") */}
-      {questions[step].id === 5 && answers[5] === "Так, я хочу відвідати певну країну" && (
+      {questions[step].id === 5 && answers.priorityDestination === "yes" && (
         <Select
           options={countryOptions}
           className="w-full mt-4"
           placeholder="Оберіть країну для подорожі..."
-          value={countryOptions.find(option => option.value === answers[6])}
-          onChange={(selectedOption) => setAnswers({ ...answers, 5.1: selectedOption.value })}
+          value={countryOptions.find(option => option.value === answers.priorityDestination)}
+          onChange={(selectedOption) => setAnswers({ ...answers, priorityCountry: selectedOption.value })}
           isSearchable={true}
         />
       )}
 
     <div className="flex justify-between items-center mt-6">
-      {/* Кнопка "Назад" */}
         <button
           onClick={() => setStep((prev) => Math.max(prev - 1, 0))}
           className="btn btn-primary text-white flex items-center px-6 py-3 mt-0"
@@ -273,11 +267,10 @@ const handleSelect = (option) => {
         <FaArrowRight className="rotate-180 mr-2" /> Назад
       </button>
 
-        {/* Кнопка "Далі" */}
       <button
-        onClick={step === questions.length - 1 ? handleSubmit : handleNext} // Якщо останнє питання, запускаємо handleSubmit
+        onClick={step === questions.length - 1 ? handleSubmit : handleNext}
         className="btn btn-primary text-white flex items-center px-6 py-3"
-        disabled={!answers[questions[step].id]} // Вимикаємо, якщо відповідь не вибрана
+        disabled={!answers[questions[step].key]}
       >
         {step === questions.length - 1 ? "Згенерувати подорож" : "Далі"}
         <FaArrowRight className="ml-2" />

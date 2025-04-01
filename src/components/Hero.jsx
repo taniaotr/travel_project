@@ -4,7 +4,6 @@ const Hero = (props) => {
   const {onStart} = props;
   return (
     <section className="container mx-auto px-18 pt-20 pb-15 flex flex-col md:flex-row items-center">
-      {/* Ліва частина - текст */}
       <div className="md:w-1/2 text-center md:text-left">
       <h1 className="text-4xl font-bold font-inter mb-4">   
           Планування подорожей за лічені хвилини
@@ -19,7 +18,6 @@ const Hero = (props) => {
         </button>
       </div>
 
-      {/* Права частина - Placeholder */}
       <div className="md:w-1/2 w-full flex justify-end mt-10 md:mt-0">
         <div className="w-[440px] h-[420px] bg-gray-300 rounded-lg shadow-lg flex items-center justify-center">
         </div>
@@ -28,5 +26,4 @@ const Hero = (props) => {
   );
 };
   
-
 export default Hero;
