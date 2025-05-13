@@ -221,7 +221,7 @@ const handleSelect = (option) => {
             : "*оберіть лише одну відповідь"}
         </p>
         <div className="grid grid-cols-2 gap-4">
-            {questions[step].type === "select" ? ( // Якщо це питання з випадаючим списком
+            {questions[step].type === "select" ? ( 
                 <Select
                 options={countryOptions}
                 className="w-full"

@@ -54,7 +54,7 @@
       const handleBeforeUnload = (e) => {
         if (result) {
           e.preventDefault();
-          e.returnValue = ""; // Потрібно для деяких браузерів
+          e.returnValue = ""; 
         }
       };
     
