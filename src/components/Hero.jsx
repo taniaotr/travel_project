@@ -1,4 +1,5 @@
 import React from "react";
+import mainPhoto from "../assets/mainph.avif";
 
 const Hero = (props) => {
   const {onStart} = props;
@@ -19,9 +20,14 @@ const Hero = (props) => {
       </div>
 
       <div className="md:w-1/2 w-full flex justify-end mt-10 md:mt-0">
-        <div className="w-[440px] h-[420px] bg-gray-300 rounded-lg shadow-lg flex items-center justify-center">
-        </div>
+      <div className="w-[440px] h-[420px] rounded-lg shadow-lg overflow-hidden">
+        <img
+          src={mainPhoto}
+          alt="Travel Illustration"
+          className="w-full h-full object-cover"
+        />
       </div>
+    </div>
     </section>
   );
 };
